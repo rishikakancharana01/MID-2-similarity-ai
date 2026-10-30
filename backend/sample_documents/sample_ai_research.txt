@@ -1,0 +1,18 @@
+Title: Advancements in Dense Vector Representations for Semantic Information Retrieval
+Authors: Dr. Elena Vance, Marcus Thorne, Dept. of Computer Science
+
+Abstract:
+Modern information retrieval has evolved substantially beyond lexical keyword matching (such as BM25). Dense retrieval uses pre-trained sentence transformer neural networks to map queries and passages into a shared high-dimensional vector space. In this space, semantic similarity correlates with the cosine of the angle between vectors. This study evaluates the effectiveness of bi-encoder architectures compared to traditional cross-encoders.
+
+1. Research Objectives:
+The primary objective of this investigation is to benchmark retrieval latency and Mean Reciprocal Rank (MRR) across varying document chunk lengths. We specifically investigate whether overlapping sliding windows prevent context fragmentation at paragraph boundaries. Another secondary goal is establishing the trade-offs between model dimensionality and CPU inference throughput for production SaaS applications.
+
+2. Methodology and Architecture:
+We trained a bi-encoder using contrastive learning with MultipleNegativesRankingLoss. The corpus consisted of 500,000 academic abstracts. Text chunks were partitioned into 100-word windows with 25-word overlaps. Embeddings were generated using 384-dimensional dense vectors and indexed using normalized L2 Euclidean distance and cosine similarity metrics.
+
+3. Key Findings:
+Our empirical results demonstrate that dense semantic retrieval outperforms traditional BM25 by 27.4% in capturing synonyms, paraphrased concepts, and conceptual questions where no exact keyword match exists. Furthermore, maintaining an overlap of 20 to 25 words between chunks successfully mitigated context loss for 93.1% of boundary-spanning facts.
+
+4. Conclusion and Future Directions:
+Dense vector representations provide robust semantic understanding for document search and question answering systems. Future work will investigate hybrid dense-sparse retrieval systems and quantized embeddings for ultra-low latency mobile deployments.
+

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Similarity AI — Intelligent Document Analysis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+    .fade-in { animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+
+  <!-- TOP NAVBAR -->
+  <header class="sticky top-0 z-50 bg-slate-950 text-slate-100 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('landing')">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg">
+          <i data-lucide="file-text" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="font-bold text-lg text-white">Similarity <span class="text-blue-400">AI</span></span>
+          <span class="ml-2 text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">ML Engine</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center space-x-1">
+        <button onclick="switchPage('landing')" id="nav-landing" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-slate-800 text-white">Home</button>
+        <button onclick="switchPage('dashboard')" id="nav-dashboard" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800">Document Analysis</button>
+        <button onclick="switchPage('results')" id="nav-results" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800">Results</button>
+        <button onclick="switchPage('history')" id="nav-history" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800">History</button>
+        <button onclick="switchPage('how-it-works')" id="nav-how-it-works" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800">How It Works</button>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <div id="backend-status-pill" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-slate-900 border border-slate-700">
+          <span id="backend-status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="backend-status-text" class="text-slate-300 font-medium">FastAPI Online</span>
+        </div>
+        <button onclick="switchPage('dashboard')" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow transition-all">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Launch Dashboard</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT PAGES CONTAINER -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- PAGE 1: LANDING -->
+    <div id="page-landing" class="fade-in space-y-16">
+      <section class="text-center max-w-3xl mx-auto pt-10 pb-6 space-y-5">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-600"></i>
+          <span>Semantic Document Analysis &amp; Question Answering</span>
+        </div>
+        <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          Find the Answers <br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Hidden in Your Documents.</span>
+        </h1>
+        <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+          Upload a document, ask a question, and discover the most relevant information using semantic similarity and intelligent document analysis.
+        </p>
+        <div class="flex justify-center gap-3 pt-2">
+          <button onclick="switchPage('dashboard')" class="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md inline-flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>Start Analyzing</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+          <button onclick="switchPage('how-it-works')" class="px-5 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm border border-slate-200 shadow-sm inline-flex items-center gap-2">
+            <span>Explore How It Works</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 6 Features Grid -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+            <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-slate-900">1. Smart Document Upload</h3>
+          <p class="text-xs text-slate-500">Supports PDF, DOCX, and TXT with in-memory validation and page indexing.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-slate-900">2. Semantic Similarity Search</h3>
+          <p class="text-xs text-slate-500">Dense vector representations using SentenceTransformers (384 dimensions).</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+            <i data-lucide="sliders" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-slate-900">3. Ranked Relevant Passages</h3>
+          <p class="text-xs text-slate-500">Sorted strictly by computed scikit-learn cosine similarity with percentage bars.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold">
+            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-slate-900">4. Evidence-Based Answers</h3>
+          <p class="text-xs text-slate-500">Extracted strictly from matched document text. Zero outside hallucinations.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-slate-900">5. Exact Source References</h3>
+          <p class="text-xs text-slate-500">Preserves original PDF page numbers and paragraph chunk IDs for citations.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+            <i data-lucide="zap" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-slate-900">6. Fast Document Analysis</h3>
+          <p class="text-xs text-slate-500">High-throughput CPU inference with sliding-window overlap prevents context loss.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- PAGE 2: DASHBOARD -->
+    <div id="page-dashboard" class="hidden fade-in space-y-6">
+      <div class="border-b border-slate-200 pb-4">
+        <h1 class="text-2xl font-bold text-slate-900">Document Analysis Dashboard</h1>
+        <p class="text-xs text-slate-500">Ask questions and find semantically relevant information in your documents.</p>
+      </div>
+
+      <!-- Two column workspace -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        
+        <!-- Left Box: Question Input -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                <span class="w-6 h-6 rounded bg-blue-100 text-blue-700 flex items-center justify-center text-xs">1</span>
+                Ask Your Question
+              </span>
+              <span id="char-counter" class="text-xs text-slate-400">0 chars</span>
+            </div>
+            <textarea 
+              id="user-query" 
+              rows="5" 
+              oninput="updateCharCount()"
+              class="w-full p-3 text-sm rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Enter a question or describe what you want to extract from the document...">What are the primary objectives of this research?</textarea>
+          </div>
+          <div class="pt-3 border-t border-slate-100 space-y-2">
+            <p class="text-xs font-semibold text-slate-500">Click a Sample Question to Populate:</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="setQuery('Summarize the main findings.')" class="text-xs px-2.5 py-1 bg-slate-100 hover:bg-blue-50 text-slate-700 rounded-lg border border-slate-200">"Summarize findings"</button>
+              <button onclick="setQuery('What are the objectives of this research?')" class="text-xs px-2.5 py-1 bg-slate-100 hover:bg-blue-50 text-slate-700 rounded-lg border border-slate-200">"What are objectives?"</button>
+              <button onclick="setQuery('Identify the key methods used.')" class="text-xs px-2.5 py-1 bg-slate-100 hover:bg-blue-50 text-slate-700 rounded-lg border border-slate-200">"Key methods"</button>
+              <button onclick="setQuery('What conclusions are presented?')" class="text-xs px-2.5 py-1 bg-slate-100 hover:bg-blue-50 text-slate-700 rounded-lg border border-slate-200">"Conclusions"</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Box: File Uploader -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                <span class="w-6 h-6 rounded bg-blue-100 text-blue-700 flex items-center justify-center text-xs">2</span>
+                Upload Your Document
+              </span>
+              <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">PDF, DOCX, TXT (Max 15 MB)</span>
+            </div>
+
+            <!-- Drag & Drop Zone -->
+            <div id="drop-zone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-6 text-center cursor-pointer transition-all bg-slate-50/50">
+              <input type="file" id="file-input" accept=".pdf,.docx,.txt" class="hidden" onchange="handleFileSelect(event)">
+              <div class="flex flex-col items-center justify-center space-y-2" onclick="document.getElementById('file-input').click()">
+                <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+                </div>
+                <p class="text-xs font-semibold text-slate-700">Click to browse or drag &amp; drop document</p>
+                <div class="flex gap-1.5 pt-1">
+                  <span class="text-[10px] px-2 py-0.5 bg-slate-100 border rounded text-slate-600">PDF</span>
+                  <span class="text-[10px] px-2 py-0.5 bg-slate-100 border rounded text-slate-600">DOCX</span>
+                  <span class="text-[10px] px-2 py-0.5 bg-slate-100 border rounded text-slate-600">TXT</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selected File Badge -->
+            <div id="selected-file-info" class="hidden mt-3 p-3 rounded-xl bg-blue-50/80 border border-blue-200 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center">
+                  <i data-lucide="file-text" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <p id="file-name" class="text-xs font-bold text-slate-800 break-all">document.txt</p>
+                  <p id="file-size" class="text-[11px] text-slate-500">12 KB</p>
+                </div>
+              </div>
+              <button onclick="clearSelectedFile()" class="p-1 text-slate-400 hover:text-rose-600">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 text-xs text-slate-400 flex justify-between">
+            <span>In-memory processing</span>
+            <span>Client verification active</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Button -->
+      <div>
+        <button 
+          id="btn-analyze" 
+          onclick="runRealAnalysis()" 
+          class="w-full py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-base shadow-md flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+          <span>Analyze Document with Similarity Engine</span>
+        </button>
+      </div>
+
+      <!-- Error Toast -->
+      <div id="error-box" class="hidden p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs"></div>
+    </div>
+
+    <!-- PAGE 3: RESULTS -->
+    <div id="page-results" class="hidden fade-in space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">Analysis Results</h1>
+          <p id="result-query-meta" class="text-xs text-slate-500">Query &amp; Document</p>
+        </div>
+        <button onclick="switchPage('dashboard')" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold shadow hover:bg-blue-700">New Analysis</button>
+      </div>
+
+      <!-- Generated Answer Card -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-blue-400"></i>
+            <h3 class="font-bold text-sm">Generated Answer</h3>
+          </div>
+          <button onclick="copyAnswer()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span id="copy-btn-text">Copy Answer</span>
+          </button>
+        </div>
+        <div id="answer-content" class="p-6 text-sm text-slate-700 leading-relaxed space-y-3">
+          <!-- Populated dynamically by real ML engine -->
+        </div>
+      </div>
+
+      <!-- Passages List -->
+      <div class="space-y-3">
+        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i>
+          <span>Most Relevant Passages (Ranked by Cosine Similarity)</span>
+        </h3>
+        
+        <div id="passages-container" class="space-y-3">
+          <!-- Populated dynamically by real ML engine -->
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: HISTORY -->
+    <div id="page-history" class="hidden fade-in space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">Analysis History</h1>
+          <p class="text-xs text-slate-500">Session records cached temporarily in client storage.</p>
+        </div>
+        <button onclick="clearSessionHistory()" class="px-3.5 py-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg hover:bg-rose-100">Clear History</button>
+      </div>
+
+      <div id="history-container" class="space-y-3">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <!-- PAGE 5: HOW IT WORKS -->
+    <div id="page-how-it-works" class="hidden fade-in space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <h1 class="text-3xl font-extrabold text-slate-900">The NLP Semantic Pipeline</h1>
+        <p class="text-xs sm:text-sm text-slate-500">Sentence Transformers convert texts into 384D vectors; scikit-learn computes cosine similarity.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <h3 class="font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="compass" class="w-5 h-5 text-blue-600"></i>
+            <span>Mathematical Cosine Formula</span>
+          </h3>
+          <div class="p-4 bg-slate-900 text-blue-300 font-mono rounded-xl text-center text-sm">
+            cos(θ) = ( A · B ) / ( ||A|| × ||B|| )
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Evaluates the angle between vector A (the question) and vector B (each passage). Because vectors are normalized, dot product directly computes the cosine distance.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <h3 class="font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600"></i>
+            <span>Academic Distinction</span>
+          </h3>
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed">
+            <strong>Similarity ≠ Factuality:</strong> Cosine similarity measures semantic relatedness. A high score means the document discusses the query topic, not that the answer is guaranteed factually true.
+          </div>
+          <p class="text-xs text-slate-500">
+            Overlapping windows (100 words with 25-word overlap) prevent context loss across paragraph boundaries.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PROCESSING MODAL -->
+  <div id="loading-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-xl">
+      <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 mx-auto flex items-center justify-center animate-spin">
+        <i data-lucide="loader-2" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-slate-800 text-base">Processing Document</h3>
+        <p id="loading-subtext" class="text-xs text-slate-500 mt-1">Generating 384D Embeddings &amp; Cosine Scores...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      <p class="text-white font-bold">Similarity AI — Intelligent Document Analysis</p>
+      <p>Academic ML Assignment • Sentence Transformers + Cosine Similarity + FastAPI</p>
+      <p class="text-slate-600">© 2026 Academic Research Prototype</p>
+    </div>
+  </footer>
+
+  <script>
+    let currentSelectedFile = null;
+    let analysisHistory = JSON.parse(sessionStorage.getItem('sim_history') || '[]');
+
+    function switchPage(pageId) {
+      const pages = ['landing', 'dashboard', 'results', 'history', 'how-it-works'];
+      pages.forEach(p => {
+        const el = document.getElementById(`page-${p}`);
+        const navEl = document.getElementById(`nav-${p}`);
+        if (el) el.classList.add('hidden');
+        if (navEl) {
+          navEl.classList.remove('bg-slate-800', 'text-white');
+          navEl.classList.add('text-slate-300');
+        }
+      });
+      const target = document.getElementById(`page-${pageId}`);
+      const targetNav = document.getElementById(`nav-${pageId}`);
+      if (target) target.classList.remove('hidden');
+      if (targetNav) {
+        targetNav.classList.add('bg-slate-800', 'text-white');
+        targetNav.classList.remove('text-slate-300');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (pageId === 'history') renderHistory();
+      lucide.createIcons();
+    }
+
+    function setQuery(text) {
+      document.getElementById('user-query').value = text;
+      updateCharCount();
+    }
+
+    function updateCharCount() {
+      const val = document.getElementById('user-query').value;
+      document.getElementById('char-counter').innerText = `${val.length} chars`;
+    }
+
+    function handleFileSelect(e) {
+      if (e.target.files && e.target.files[0]) {
+        currentSelectedFile = e.target.files[0];
+        document.getElementById('file-name').innerText = currentSelectedFile.name;
+        document.getElementById('file-size').innerText = `${(currentSelectedFile.size / 1024).toFixed(1)} KB`;
+        document.getElementById('selected-file-info').classList.remove('hidden');
+        document.getElementById('drop-zone').classList.add('hidden');
+      }
+    }
+
+    function clearSelectedFile() {
+      currentSelectedFile = null;
+      document.getElementById('file-input').value = '';
+      document.getElementById('selected-file-info').classList.add('hidden');
+      document.getElementById('drop-zone').classList.remove('hidden');
+    }
+
+    async function runRealAnalysis() {
+      const query = document.getElementById('user-query').value.trim();
+      const errBox = document.getElementById('error-box');
+      errBox.classList.add('hidden');
+
+      if (!query || query.length < 3) {
+        errBox.innerText = 'Please enter a valid question with at least 3 characters.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      if (!currentSelectedFile) {
+        errBox.innerText = 'Please upload a document (PDF, DOCX, or TXT) before starting analysis.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      // Show Loading Modal
+      const modal = document.getElementById('loading-modal');
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+
+      const formData = new FormData();
+      formData.append('query', query);
+      formData.append('file', currentSelectedFile);
+      formData.append('threshold', '0.20');
+
+      try {
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({ detail: response.statusText }));
+          throw new Error(errData.detail || 'Analysis failed');
+        }
+
+        const data = await response.json();
+        
+        // Save to session history
+        analysisHistory.unshift({
+          query: data.query,
+          document_name: data.document_name,
+          time: new Date().toLocaleTimeString(),
+          top_similarity: data.top_passages[0] ? data.top_passages[0].similarity_percentage : 0,
+          data: data
+        });
+        sessionStorage.setItem('sim_history', JSON.stringify(analysisHistory));
+
+        renderResults(data);
+        modal.classList.add('hidden');
+        switchPage('results');
+
+      } catch (err) {
+        modal.classList.add('hidden');
+        errBox.innerText = `Error: ${err.message}`;
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function renderResults(data) {
+      document.getElementById('result-query-meta').innerText = `"${data.query}" • ${data.document_name} (${data.execution_time_seconds}s)`;
+      
+      // Render Answer
+      const answerBox = document.getElementById('answer-content');
+      answerBox.innerHTML = `
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 whitespace-pre-line">${data.answer}</div>
+        <div class="flex flex-wrap gap-2 pt-2">
+          ${data.top_passages.map(p => `
+            <span class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded font-medium">
+              Ref #${p.rank}: ${p.page_number ? `Page ${p.page_number}` : `Passage ${p.passage_id + 1}`} (${p.similarity_percentage}%)
+            </span>
+          `).join('')}
+        </div>
+      `;
+
+      // Render Passages
+      const passagesBox = document.getElementById('passages-container');
+      if (!data.top_passages || data.top_passages.length === 0) {
+        passagesBox.innerHTML = `<div class="p-4 text-center text-xs text-slate-500">No passages met the minimum relevance threshold.</div>`;
+      } else {
+        passagesBox.innerHTML = data.top_passages.map(p => `
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded">
+                Rank #${p.rank} • ${p.page_number ? `Page ${p.page_number}` : `Block ${p.passage_id + 1}`}
+              </span>
+              <span class="text-sm font-bold font-mono text-emerald-600">${p.similarity_percentage}% Cosine Match</span>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed">${p.text}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('history-container');
+      if (analysisHistory.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400 bg-white rounded-xl border">No analyses performed yet in this session.</div>`;
+        return;
+      }
+      container.innerHTML = analysisHistory.map(item => `
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs text-slate-400">${item.time} • ${item.document_name}</span>
+            <h4 class="font-bold text-sm text-slate-800">"${item.query}"</h4>
+            <span class="text-xs text-blue-600 font-medium">Top Match: ${item.top_similarity}%</span>
+          </div>
+          <button onclick='renderResults(${JSON.stringify(item.data)}); switchPage("results");' class="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold">View Results</button>
+        </div>
+      `).join('');
+    }
+
+    function clearSessionHistory() {
+      analysisHistory = [];
+      sessionStorage.removeItem('sim_history');
+      renderHistory();
+    }
+
+    function copyAnswer() {
+      const text = document.getElementById('answer-content').innerText;
+      navigator.clipboard.writeText(text);
+      document.getElementById('copy-btn-text').innerText = 'Copied!';
+      setTimeout(() => document.getElementById('copy-btn-text').innerText = 'Copy Answer', 2000);
+    }
+
+    // Health check ping
+    async function checkHealth() {
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) {
+          document.getElementById('backend-status-text').innerText = 'FastAPI Online';
+        }
+      } catch (e) {
+        document.getElementById('backend-status-text').innerText = 'Connecting...';
+      }
+    }
+
+    checkHealth();
+    updateCharCount();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
