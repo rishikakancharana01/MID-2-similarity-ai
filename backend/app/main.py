@@ -10,10 +10,12 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-# Automatically add the backend directory to sys.path so imports work from any working directory
+# Automatically add both the project root and backend directory to sys.path
 BACKEND_DIR = Path(__file__).resolve().parent.parent
-if str(BACKEND_DIR) not in sys.path:
-    sys.path.insert(0, str(BACKEND_DIR))
+ROOT_DIR = BACKEND_DIR.parent
+for p in (ROOT_DIR, BACKEND_DIR):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
 
 # Load environment variables
 load_dotenv()
@@ -224,6 +226,6 @@ async def analyze_document(
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 7860))
-    uvicorn.run("backend.app.main:app", host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
 
