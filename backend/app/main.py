@@ -78,19 +78,6 @@ def serve_home():
     return {"message": "Similarity AI Engine is running. Visit /api/health for status."}
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Pre-warm the SentenceTransformer model on server boot."""
-    try:
-        logger.info("Pre-warming Sentence Transformers model...")
-        engine = get_similarity_engine()
-        # Run a quick dummy encode so the first user query responds instantly
-        engine.model.encode(["Similarity AI ready"], show_progress_bar=False)
-        logger.info(f"Model {engine.model_name} ready on {engine.device_name}")
-    except Exception as e:
-        logger.warning(f"Model pre-warm warning (will initialize on first query): {e}")
-
-
 @app.get("/api/health", response_model=HealthResponse)
 def health_check():
     """Returns engine health, model specifications, and execution environment."""
@@ -237,5 +224,6 @@ async def analyze_document(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run("backend.app.main:app", host="0.0.0.0", port=port)
 

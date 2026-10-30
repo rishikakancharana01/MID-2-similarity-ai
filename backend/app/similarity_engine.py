@@ -31,7 +31,6 @@ class SemanticSimilarityEngine:
 
     def __init__(self, model_name: str = MODEL_NAME):
         self.model_name = model_name
-        self.load_model()
 
     def load_model(self):
         """Lazy load or initialize the SentenceTransformer model once."""
@@ -55,7 +54,9 @@ class SemanticSimilarityEngine:
 
     @property
     def device_name(self) -> str:
-        return str(self.model.device)
+        if self._model is not None:
+            return str(self._model.device)
+        return "cpu"
 
     def compute_similarity(
         self,
