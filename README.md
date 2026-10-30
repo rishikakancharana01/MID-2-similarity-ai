@@ -3,6 +3,7 @@
 > **Architecture:** Bi-Encoder Dense Retrieval (`all-MiniLM-L6-v2`) + scikit-learn Cosine Similarity + FastAPI + React & Tailwind CSS.
 
 ---
+to explore the similarity press the link here :https://mid-2-similarity-ai.vercel.app
 
 ## 📌 Project Overview
 
